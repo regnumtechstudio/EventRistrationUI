@@ -1,0 +1,270 @@
+<!-- <div class="container-fluid">
+    <div class="row vh-100">
+        <div class="col-md-6 d-none d-md-flex justify-content-center align-items-center bg-primary text-white">
+            <div class="event-description text-center mt-2">
+                <h2>Join Our Exclusive Event</h2>
+                <p class="lead">Event registration forms are crucial for managing attendees and ensuring a smooth event
+                    experience. They collect participant information, including basic details, event preferences, and
+                    payment information if applicable.</p>
+                <p><strong>Register today</strong> and secure your spot for an unforgettable experience!</p>
+            </div>
+        </div>
+        <div class="col-md-6 d-flex justify-content-center align-items-center bg-light">
+            <div class="login-form-container" style="max-width: 400px; width: 100%;">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="text-center mb-4 mt-2">Event Registration</h2>
+
+                        <form #mainForm="ngForm" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+
+                            <div class="form-group mb-3">
+                                <label class="form-label" for="fullName">Full Name</label>
+                                <input id="fullName" formControlName="fullName" type="text" class="form-control"
+                                    placeholder="Enter your full name" />
+                                <div *ngIf="(myFormControl['fullName']?.touched || submitted) && myFormControl['fullName']?.errors?.['required']"
+                                    class="text-danger">
+                                    Name is required.
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label class="form-label" for="mobileNo">Mobile </label>
+
+                                <div class="d-flex">
+                                    <input id="mobileNo" formControlName="mobileNo" type="text" class="form-control"
+                                        placeholder="Enter your mobile number" [maxlength]="10" />
+                                    <button *ngIf="!otpSentMobile && mobileOtpVerified !== true" type="button"
+                                        class="btn btn-primary btn-sm ms-2"
+                                        (click)="sendOTP('mobile');generateMobileOTP()">
+                                        Send&nbsp;OTP
+                                    </button>
+
+                                    <button *ngIf="otpSentMobile && timerMobile > 0 && mobileOtpVerified !== true"
+                                        type="button" class="btn btn-secondary btn-sm ms-2" disabled>
+                                        Resend&nbsp;in&nbsp;{{ timerMobile }}s
+                                    </button>
+
+                                    <button *ngIf="otpSentMobile && timerMobile === 0 && mobileOtpVerified !== true"
+                                        type="button" class="btn btn-primary btn-sm ms-2"
+                                        (click)="sendOTP('mobile');generateMobileOTP()">
+                                        Resend&nbsp;OTP
+                                    </button>
+
+                                </div>
+                                <div *ngIf="(myFormControl['mobileNo']?.touched || submittedMobile) && myFormControl['mobileNo']?.errors?.['required']"
+                                    class="text-danger">
+                                    Mobile number is required.
+                                </div>
+                                <div *ngIf="(myFormControl['mobileNo']?.touched || submittedMobile) && myFormControl['mobileNo']?.errors?.['pattern']"
+                                    class="text-danger">
+                                    Enter valid mobile number.
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <div *ngIf="otpSentMobile">
+                                    <input id="otpMobile" formControlName="otpMobile" type="text" class="form-control"
+                                        placeholder="Enter OTP" [maxLength]="6" [minlength]="6"
+                                        (keyup)="verifyMobileOTP()" [class.is-valid]="mobileOtpVerified === true"
+                                        [class.is-invalid]="mobileOtpVerified === false" />
+                                    <div *ngIf="(myFormControl['otpMobile']?.touched || submitted) && myFormControl['otpMobile']?.invalid"
+                                        class="text-danger">
+                                        OTP is required.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label class="form-label" for="email">Email</label>
+
+                                <div class="d-flex">
+                                    <input id="email" formControlName="email" type="email" class="form-control"
+                                        placeholder="Enter your email" />
+                                    <button *ngIf="!otpSentEmail && emailOtpVerified !== true" type="button"
+                                        class="btn btn-primary btn-sm ms-2"
+                                        (click)="sendOTP('email');generateEmailOTP()">
+                                        Send&nbsp;OTP
+                                    </button>
+                                    <button *ngIf="otpSentEmail && timerEmail > 0 && emailOtpVerified !== true"
+                                        type="button" class="btn btn-secondary btn-sm ms-2" disabled>
+                                        Resend&nbsp;in&nbsp;{{ timerEmail }}s
+                                    </button>
+
+                                    <button *ngIf="otpSentEmail && timerEmail === 0 && emailOtpVerified !== true"
+                                        type="button" class="btn btn-primary btn-sm ms-2"
+                                        (click)="sendOTP('email');generateEmailOTP()">
+                                        Resend&nbsp;OTP
+                                    </button>
+
+                                </div>
+                                <div *ngIf="(myFormControl['email']?.touched || submittedEmail) && myFormControl['email']?.errors?.['required']"
+                                    class="text-danger">
+                                    Email is required.
+                                </div>
+                                <div *ngIf="(myFormControl['email']?.touched || submittedEmail) && myFormControl['email']?.errors?.['email']"
+                                    class="text-danger">
+                                    Enter valid email.
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <div *ngIf="otpSentEmail">
+                                    <input id="otpEmail" formControlName="otpEmail" type="text" class="form-control"
+                                        placeholder="Enter OTP" [maxLength]="6" [minLength]="6"
+                                        (keyup)="verifyEmailOTP()" [class.is-valid]="emailOtpVerified === true"
+                                        [class.is-invalid]="emailOtpVerified === false" />
+
+                                    <div *ngIf="(myFormControl['otpEmail']?.touched || submitted) && myFormControl['otpEmail']?.invalid"
+                                        class="text-danger">
+                                        OTP is required.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label class="form-label" for="city">City</label>
+                                <input id="city" formControlName="city" type="text" class="form-control"
+                                    placeholder="Enter city name" />
+                                <div *ngIf="(myFormControl['city']?.touched || submitted) && myFormControl['city']?.errors?.['required']"
+                                    class="text-danger">
+                                    City is required.
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block mb-2"
+                                [disabled]="registrationForm.invalid">
+                                Submit
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="container-fluid">
+    <div class="row vh-100">
+        <div class="col-md-6 d-none d-md-flex justify-content-center align-items-center bg-primary-dark text-white p-5">
+            <div class="text-center">
+                <h1 class="display-4 fw-bold">Join Our Exclusive Event</h1>
+                <p class="lead mt-3">
+                    Manage attendees and ensure a smooth event experience with a simple registration process.
+                </p>
+                <p class="mt-3"><strong>Register today</strong> and secure your spot!</p>
+            </div>
+        </div>
+
+        <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center bg-light p-4">
+            <div class="registration-form-container w-100" style="max-width: 500px;">
+                <div class="text-center mb-4">
+                    <img src="https://docs.investwellonline.com/cloud_investwell_images/logo/Large/regnumwealth_Logo.png?v=1748932459689" 
+                         alt="Regnum Wealth Logo" class="img-fluid" style="max-height: 60px;">
+                    <!-- <h2 class="mt-3 mb-2">Event Registration</h2> -->
+                    <!-- <p class="text-muted">Fill in your details to secure your spot</p> -->
+                </div>
+                <div class="card border-0 rounded-4"><!--card shadow-lg-->
+                    <div class=" card-body p-4"><!-- -->
+                        <!-- <img class="logo mx-auto d-block mb-4"
+                            src="https://docs.investwellonline.com/cloud_investwell_images/logo/Large/regnumwealth_Logo.png?v=1748932459689"
+                            alt="Regnum Wealth Logo" width="140" />-->
+                        <h2 class="text-center mb-4">Event Registration</h2> 
+
+                        <form #mainForm="ngForm" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+
+                            <div class="mb-3">
+                                <label for="fullName" class="form-label">Full Name</label>
+                                <input id="fullName" formControlName="fullName" type="text" class="form-control"
+                                    placeholder="Your full name" />
+                                <div *ngIf="(myFormControl['fullName']?.touched || submitted) && myFormControl['fullName']?.errors?.['required']"
+                                    class="text-danger mt-1">
+                                    Name is required.
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="mobileNo" class="form-label">Mobile Number</label>
+                                <div class="d-flex">
+                                    <input id="mobileNo" formControlName="mobileNo" type="text" class="form-control"
+                                        placeholder="Your mobile" maxlength="10" />
+                                    <button *ngIf="!otpSentMobile && mobileOtpVerified !== true" type="button"
+                                        class="btn btn-primary btn-sm ms-2"
+                                        (click)="sendOTP('mobile');generateMobileOTP()">Send OTP</button>
+                                    <button *ngIf="otpSentMobile && timerMobile > 0 && mobileOtpVerified !== true"
+                                        type="button" class="btn btn-secondary btn-sm ms-2 text-nowrap "
+                                        style="min-width: 110px;" disabled>
+                                        Resend in {{ timerMobile }}s
+                                    </button>
+                                    <!-- <button *ngIf="otpSentMobile && timerMobile > 0 && mobileOtpVerified !== true"
+                                        type="button" class="btn btn-secondary btn-sm ms-2" disabled>Resend in {{
+                                        timerMobile }}s</button> -->
+                                    <button *ngIf="otpSentMobile && timerMobile === 0 && mobileOtpVerified !== true"
+                                        type="button" class="btn btn-primary btn-sm ms-2"
+                                        (click)="sendOTP('mobile');generateMobileOTP()">Resend OTP</button>
+                                </div>
+                                <div *ngIf="(myFormControl['mobileNo']?.touched || submittedMobile) && myFormControl['mobileNo']?.errors?.['required']"
+                                    class="text-danger mt-1">Mobile number is required.</div>
+                                <div *ngIf="(myFormControl['mobileNo']?.touched || submittedMobile) && myFormControl['mobileNo']?.errors?.['pattern']"
+                                    class="text-danger mt-1">Enter a valid number.</div>
+                            </div>
+
+                            <div class="mb-3" *ngIf="otpSentMobile">
+                                <input formControlName="otpMobile" type="text" class="form-control"
+                                    placeholder="Enter Mobile OTP" maxlength="6" (keyup)="verifyMobileOTP()"
+                                    [class.is-valid]="mobileOtpVerified === true"
+                                    [class.is-invalid]="mobileOtpVerified === false" />
+                                <div *ngIf="(myFormControl['otpMobile']?.touched || submitted) && myFormControl['otpMobile']?.invalid"
+                                    class="text-danger mt-1">OTP is required.</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <div class="d-flex">
+                                    <input formControlName="email" type="email" class="form-control"
+                                        placeholder="Your email" />
+                                    <button *ngIf="!otpSentEmail && emailOtpVerified !== true" type="button"
+                                        class="btn btn-primary btn-sm ms-2"
+                                        (click)="sendOTP('email');generateEmailOTP()">Send OTP</button>
+                                    <button *ngIf="otpSentEmail && timerEmail > 0 && emailOtpVerified !== true"
+                                        type="button" class="btn btn-secondary btn-sm ms-2 text-nowrap"
+                                        style="min-width: 110px;" disabled>
+                                        Resend in {{ timerEmail }}s
+                                    </button>
+                                    <!-- <button *ngIf="otpSentEmail && timerEmail > 0 && emailOtpVerified !== true"
+                                        type="button" class="btn btn-secondary btn-sm ms-2" disabled>Resend in {{
+                                        timerEmail }}s</button> -->
+                                    <button *ngIf="otpSentEmail && timerEmail === 0 && emailOtpVerified !== true"
+                                        type="button" class="btn btn-primary btn-sm ms-2"
+                                        (click)="sendOTP('email');generateEmailOTP()">Resend OTP</button>
+                                </div>
+                                <div *ngIf="(myFormControl['email']?.touched || submittedEmail) && myFormControl['email']?.errors?.['required']"
+                                    class="text-danger mt-1">Email is required.</div>
+                                <div *ngIf="(myFormControl['email']?.touched || submittedEmail) && myFormControl['email']?.errors?.['email']"
+                                    class="text-danger mt-1">Enter a valid email.</div>
+                            </div>
+
+                            <div class="mb-3" *ngIf="otpSentEmail">
+                                <input formControlName="otpEmail" type="text" class="form-control"
+                                    placeholder="Enter Email OTP" maxlength="6" (keyup)="verifyEmailOTP()"
+                                    [class.is-valid]="emailOtpVerified === true"
+                                    [class.is-invalid]="emailOtpVerified === false" />
+                                <div *ngIf="(myFormControl['otpEmail']?.touched || submitted) && myFormControl['otpEmail']?.invalid"
+                                    class="text-danger mt-1">OTP is required.</div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="city" class="form-label">City</label>
+                                <input formControlName="city" type="text" class="form-control" placeholder="Your city" />
+                                <div *ngIf="(myFormControl['city']?.touched || submitted) && myFormControl['city']?.errors?.['required']"
+                                    class="text-danger mt-1">City is required.</div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-lg w-100"
+                                [disabled]="registrationForm.invalid">Submit Registration</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

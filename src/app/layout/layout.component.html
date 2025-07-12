@@ -1,0 +1,29 @@
+<div class="admin-dashboard">
+  <!-- Toggle Button for mobile -->
+  <div class="page-header">
+    <button class="sidebar-toggle" (click)="toggleSidebar()">
+      <i class="fa fa-bars"></i>
+    </button>
+  </div>
+  <aside class="sidebar" [class.open]="isSidebarOpen">
+    <div class="brand">Admin</div>
+    <nav class="menu">
+      <a class="menu-item" [routerLink]="['/','dashboard']" (click)="onMenuItemClick()">
+        <i class="fa fa-home me-2"></i> Dashboard
+      </a>
+      <a class="menu-item" [routerLink]="['/','clientlist']" (click)="onMenuItemClick()">
+        <i class="fa fa-user-circle-o me-2"></i> Participants
+      </a>
+      <a class="menu-item" href="javascript:void(0)" (click)="onMenuItemClick()">
+        <i class="fa fa-bar-chart me-2"></i> Reports
+      </a>
+      <a class="menu-item" href="javascript:void(0)" (click)="onMenuItemClick()">
+        <i class="fa fa-cog me-2"></i> Settings
+      </a>
+    </nav>
+  </aside>
+
+  <main class="main-content" (click)="closeSidebarOnMobile()">
+    <router-outlet></router-outlet>
+  </main>
+</div>

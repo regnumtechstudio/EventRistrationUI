@@ -1,0 +1,53 @@
+<header class="top-bar">
+  <h1>Welcome, Admin 👋</h1>
+  <a class="float-end" href="javascript:void(0)" (click)="logout()">
+    Log Out
+  </a>
+</header>
+  <!-- <div class="avatar">
+        <img src="https://i.pravatar.cc/40" alt="Avatar" />
+      </div> -->
+
+<section class="stats-grid">
+  <!-- <div class="card">
+    <h3>Total Gifted</h3>
+    <p>{{totalGifted}}</p>
+  </div>
+  <div class="card">
+    <h3>Pending Gifted</h3>
+    <p>{{totalGiftPending}}</p>
+  </div>
+  <div class="card">
+    <h3>Orders</h3>
+    <p>342</p>
+  </div>
+  <div class="card">
+    <h3>Feedback</h3>
+    <p>94</p>
+  </div> -->
+  <div class="card highlight">
+    <h3>Total Gifted 🎁</h3>
+    <p>{{ totalGifted }}</p>
+  </div>
+  <div class="card pending">
+    <h3>Pending Gift ⏳</h3>
+    <p>{{ totalGiftPending }}</p>
+  </div>
+</section>
+
+<section class="bottom-widgets">
+  <div class="widget border">
+    <h3>Recent Activity</h3>
+    <ul>
+      <li>John created a new order</li>
+      <li>Mary updated her profile</li>
+      <li>Report generated</li>
+    </ul>
+  </div>
+
+  <div class="widget border">
+    <h3>Quick Actions</h3>
+    <button>Create Report</button>
+    <button>Add User</button>
+  </div>
+</section>

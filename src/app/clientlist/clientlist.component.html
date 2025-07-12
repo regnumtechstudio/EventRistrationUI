@@ -1,0 +1,153 @@
+<!-- <div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-4">
+            <div class="col-sm-6">
+                <h2 class="m-0">Participants List <i *ngIf="isLoading" class='fa fa-spinner fa-spin'></i></h2>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-end">
+                    <li class="breadcrumb-item"><a [routerLink]="['/','dashboard']">Home</a></li>
+                    <li class="breadcrumb-item active"> Client List </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div> -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+            <div class="d-flex align-items-center">
+                <h2 class="m-0">Participants List</h2>
+            </div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a [routerLink]="['/', 'dashboard']">Home</a></li>
+                    <!-- <li class="breadcrumb-item active" aria-current="page">Client List</li> -->
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3">
+                    <select type="text" id="eventSelect" class="form-select" (change)="filter(eventmasterModel.id)">
+                        <option value="" disabled selected hidden>select event</option>
+                        <option *ngFor="let event of _datalistOfEvent" [value]="event.id">{{ event.eventName }}</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input type="text" placeholder="Type to search " #txtsearch (keyup)="search(txtsearch.value)"
+                            class="form-control float-right">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary" (click)="search(txtsearch.value)">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="table-responsive">
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Mobile</th>
+                            <th>City</th>
+                            <th>Benefaction</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of _datalist; index as i;">
+                            <td scope="row">{{ i + 1 }}</td>
+                            <td>{{ item.fullName}}</td>
+                            <td>{{ item.email}}</td>
+                            <td>{{ item.mobileNo}}</td>
+                            <td>{{ item.city}}</td>
+                            <td>
+                                <button *ngIf="item.tokenGiftIssued" class="btn btn-sm btn-outline-success">
+                                    <i class="fa fa-gift me-1"></i> Gifted
+                                </button>
+
+                                <button *ngIf="!item.tokenGiftIssued" (click)="giftIssued(item.clientId,item.eventId)"
+                                    class="btn btn-sm btn-outline-danger">
+                                    <i class="fa fa-gift me-1"></i> Sent Gift
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div> -->
+
+            <!-- TABLE FOR DESKTOP -->
+            <div class="table-responsive" *ngIf="!isMobile">
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Reference No</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Mobile</th>
+                            <th>City</th>
+                            <th>Benefaction</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of _datalist; index as i;">
+                            <td>{{ i + 1 }}</td>
+                            <td align="center">
+                                <span class="badge text-bg-primary">{{ item.referenceNo }}</span>
+                            </td>
+                            <td>{{ item.fullName }}</td>
+                            <td>{{ item.email }}</td>
+                            <td>{{ item.mobileNo }}</td>
+                            <td>{{ item.city }}</td>
+                            <td>
+                                <button *ngIf="item.tokenGiftIssued" class="btn btn-sm btn-outline-success">
+                                    <i class="fa fa-gift me-1"></i> Issued
+                                </button>
+                                <button *ngIf="!item.tokenGiftIssued" (click)="giftIssued(item.clientId, item.eventId)"
+                                    class="btn btn-sm btn-outline-danger">
+                                    <i class="fa fa-gift me-1"></i> Issue
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- CARDS FOR MOBILE -->
+            <div *ngIf="isMobile">
+                <div *ngFor="let item of _datalist; index as i;" class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.fullName }}
+                        <span class="badge text-bg-primary">{{ item.referenceNo }}</span> 
+                        </h5> 
+                        <p class="card-text">
+                            <strong>Email:</strong> {{ item.email }} <br>
+                            <strong>Mobile:</strong> {{ item.mobileNo }} <br>
+                            <strong>City:</strong> {{ item.city }}
+                        </p>
+                        <div>
+                            <button *ngIf="item.tokenGiftIssued" class="btn btn-sm btn-outline-success">
+                                <i class="fa fa-gift me-1"></i> Gifted
+                            </button>
+                            <button *ngIf="!item.tokenGiftIssued" (click)="giftIssued(item.clientId, item.eventId)"
+                                class="btn btn-sm btn-outline-danger">
+                                <i class="fa fa-gift me-1"></i> Sent Gift
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
